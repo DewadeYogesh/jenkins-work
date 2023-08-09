@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class BooksApplication {
-	public static Logger logger= LoggerFactory.getLogger(BooksApplication.class);
+	public static Logger logger= LoggerFactory.getLogger(BooksApplication.class)
 
 	public static void main(String[] args) {
 
