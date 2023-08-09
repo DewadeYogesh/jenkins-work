@@ -10,7 +10,7 @@ public class BooksApplication {
 	public static Logger logger= LoggerFactory.getLogger(BooksApplication.class);
 
 	public static void main(String[] args) {
-		logger.info("Program Started");
+
 
 		SpringApplication.run(BooksApplication.class, args);
 	}
