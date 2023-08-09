@@ -11,7 +11,7 @@ public class BooksApplication {
 
 	public static void main(String[] args) {
 		logger.info("Program Started");
-		logger.info("Executing programs");
+
 		SpringApplication.run(BooksApplication.class, args);
 	}
 
