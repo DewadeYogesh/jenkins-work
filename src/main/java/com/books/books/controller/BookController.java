@@ -20,10 +20,10 @@ public class BookController {
         return new ResponseEntity<>(books,HttpStatus.OK);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<Book> updateBook (@RequestBody Book book) {
-        Book updateBook=bookService.updateBook(book);
-        return  new ResponseEntity<>(updateBook,HttpStatus.ACCEPTED);
+    @PutMapping("/update/{bookId}")
+    public ResponseEntity<Book> updateBook(@RequestBody Book book,@PathVariable int bookId ) {
+        Book updated = bookService.updateBook(book, bookId);
+        return ResponseEntity.ok(updated);
     }
 
     @GetMapping("/find/{id}")

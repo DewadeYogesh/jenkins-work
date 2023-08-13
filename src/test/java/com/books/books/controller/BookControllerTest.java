@@ -5,6 +5,7 @@ import com.books.books.services.BookService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -23,7 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.Matchers.*;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -59,6 +60,7 @@ class BookControllerTest {
  }
 
  @Test
+ @DisplayName("getingAllRecordsList_success")
     public  void getAllRecords_success() throws  Exception{
      List<Book> bookList=new ArrayList<>(Arrays.asList(book,book1,book2,book3));
      Mockito.when(bookService.getAll()).thenReturn(bookList);
@@ -94,13 +96,24 @@ class BookControllerTest {
 
 @Test
     public  void updatedBook_success() throws Exception{
-    Book updatedBook=Book.builder().bookId(3).bookName("Updatedbook").authorName("Updated name").ratings(8).build();
-    Mockito.when(bookService.updateBook(updatedBook)).thenReturn(updatedBook);
-    String updatedContent=objectWriter.writeValueAsString(updatedBook);
-    MockHttpServletRequestBuilder mockRequest=MockMvcRequestBuilders.put("/book/update").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(updatedContent);
-    mockMvc.perform(mockRequest).andExpect(status().isAccepted()).andExpect(jsonPath("$",notNullValue()));
+    Book updatedBook = new Book();
+    updatedBook.setBookName("Updated book");
+    updatedBook.setAuthorName("Updated Author name");
+    updatedBook.setRatings(4);
 
+    when(bookService.updateBook(updatedBook, 3)).thenReturn(updatedBook);
+
+    String content = objectWriter.writeValueAsString(updatedBook);
+
+    mockMvc.perform(put("/book/update/3")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(content)) // Use .content() to set the request body
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.bookName", is("Updated book")));
+
+    verify(bookService, times(1)).updateBook(updatedBook, 3);
 }
+
 @Test
     public  void deleteById() throws  Exception{
     Mockito.when(bookService.deleteById(book1.getBookId())).thenReturn(String.valueOf(book1));

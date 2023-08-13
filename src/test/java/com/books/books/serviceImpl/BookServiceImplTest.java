@@ -11,6 +11,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -67,9 +68,18 @@ class BookServiceImplTest {
 
     @Test
     public void updateBook_success() {
-        when(bookRepo.save(book)).thenReturn(book);
-        Book result=bookService.updateBook(book);
-        assertEquals(book,result);
+        Book updated_book=new Book();
+        updated_book.setBookName("updated Book");
+        updated_book.setAuthorName("updated autor name");
+        updated_book.setRatings(5);
+        when(bookRepo.findById(3)).thenReturn(Optional.of(book));
+        when(bookRepo.save(any(Book.class))).thenReturn(updated_book);
+        Book result=bookService.updateBook(updated_book,3);
+        assertEquals("updated Book",result.getBookName());
+        assertEquals("updated autor name",result.getAuthorName());
+        assertEquals(5,result.getRatings());
+        verify(bookRepo,times(1)).findById(3);
+        verify(bookRepo,times(1)).save(book);
     }
 
     @Test
