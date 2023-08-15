@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
+
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
@@ -73,8 +74,9 @@ class BookControllerTest {
      Mockito.when(bookService.findById(book1.getBookId())).thenReturn(book1);
     mockMvc.perform(MockMvcRequestBuilders.get("/book/find/4").contentType(MediaType.APPLICATION_JSON)).
             andExpect(status().isOk()).andExpect(MockMvcResultMatchers.jsonPath("$",notNullValue())).andExpect(MockMvcResultMatchers.jsonPath("$.bookName",is("Avengers")));
-
 }
+
+
 
 
 /**
@@ -93,6 +95,7 @@ class BookControllerTest {
     MockHttpServletRequestBuilder mockRequest=MockMvcRequestBuilders.post("/book/add").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(content);
     mockMvc.perform(mockRequest).andExpect(status().isOk()).andExpect(jsonPath("$",notNullValue())).andExpect(jsonPath("$.bookName",is("Savindhan")));
 }
+
 
 @Test
     public  void updatedBook_success() throws Exception{
