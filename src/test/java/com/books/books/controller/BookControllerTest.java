@@ -65,14 +65,14 @@ class BookControllerTest {
     public  void getAllRecords_success() throws  Exception{
      List<Book> bookList=new ArrayList<>(Arrays.asList(book,book1,book2,book3));
      Mockito.when(bookService.getAll()).thenReturn(bookList);
-     mockMvc.perform(MockMvcRequestBuilders.get("/book").contentType(MediaType.APPLICATION_JSON)).
+     mockMvc.perform(MockMvcRequestBuilders.get("/api").contentType(MediaType.APPLICATION_JSON)).
              andExpect(status().isOk()).andExpect(MockMvcResultMatchers.jsonPath("$",hasSize(4)));
  }
 
 @Test
     public void getBookByid_success() throws Exception{
      Mockito.when(bookService.findById(book1.getBookId())).thenReturn(book1);
-    mockMvc.perform(MockMvcRequestBuilders.get("/book/find/4").contentType(MediaType.APPLICATION_JSON)).
+    mockMvc.perform(MockMvcRequestBuilders.get("/api/find/4").contentType(MediaType.APPLICATION_JSON)).
             andExpect(status().isOk()).andExpect(MockMvcResultMatchers.jsonPath("$",notNullValue())).andExpect(MockMvcResultMatchers.jsonPath("$.bookName",is("Avengers")));
 }
 
@@ -92,7 +92,7 @@ class BookControllerTest {
      Mockito.when(bookService.addBook(bookadd)).thenReturn(bookadd);
       String content=objectWriter.writeValueAsString(bookadd);
 
-    MockHttpServletRequestBuilder mockRequest=MockMvcRequestBuilders.post("/book/add").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(content);
+    MockHttpServletRequestBuilder mockRequest=MockMvcRequestBuilders.post("/api/add").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(content);
     mockMvc.perform(mockRequest).andExpect(status().isOk()).andExpect(jsonPath("$",notNullValue())).andExpect(jsonPath("$.bookName",is("Savindhan")));
 }
 
@@ -108,7 +108,7 @@ class BookControllerTest {
 
     String content = objectWriter.writeValueAsString(updatedBook);
 
-    mockMvc.perform(put("/book/update/3")
+    mockMvc.perform(put("/api/update/3")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(content)) // Use .content() to set the request body
             .andExpect(status().isOk())
@@ -121,7 +121,7 @@ class BookControllerTest {
     public  void deleteById() throws  Exception{
     Mockito.when(bookService.deleteById(book1.getBookId())).thenReturn(String.valueOf(book1));
 
-    mockMvc.perform(MockMvcRequestBuilders.delete("/book/5").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+    mockMvc.perform(MockMvcRequestBuilders.delete("/api/3").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
 }
 
 }
