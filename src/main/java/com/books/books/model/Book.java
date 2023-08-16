@@ -27,4 +27,10 @@ public class Book {
     private String authorName;
     private int ratings;
 
+
+    public Book(String bookName, String authorName, int ratings) {
+        this.bookName = bookName;
+        this.authorName = authorName;
+        this.ratings = ratings;
+    }
 }
